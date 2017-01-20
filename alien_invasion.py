@@ -5,6 +5,7 @@ from ship import Ship
 import game_functions as gf
 from pygame.sprite import Group
 from bullet import Bullet
+from earth import Earth
 
 def run_game():
 	#INitialise game
@@ -13,6 +14,7 @@ def run_game():
 	screen=pygame.display.set_mode((ai_settings.screen_width,ai_settings.screen_height))
 	pygame.display.set_caption("Alien Invasion")
 	ship=Ship(ai_settings,screen)
+	earth_base=Earth(ai_settings,screen)
 	#Make a group to store bullets in.
 	bullets=Group()
 	#Start the main loop for the game.

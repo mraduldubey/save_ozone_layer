@@ -36,13 +36,15 @@ def check_events(ai_settings,screen,ship,bullets):
 			elif event.type==pygame.KEYUP:
 				check_keyup_events(event,ai_settings,screen,ship,bullets)
 
-def update_screen(ai_settings,screen,ship,bullets):
+def update_screen(ai_settings,screen,ship,bullets,earth_base):
 	"""Update images on the screen and flip to the new screen"""
 	#Redraw whole window again
 	screen.fill(ai_settings.bg_color)
 	#Redraw all bullets 
 	for bullet in bullets.sprites():
 		bullet.draw_bullet()
+	#Redraw earth base
+	earth_base.blitme()
 	#Redraw ship
 	ship.blitme()
 
