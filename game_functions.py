@@ -1,6 +1,7 @@
 import sys
 import pygame
 from bullet import Bullet
+from alien import Alien
 
 def check_keydown_events(event,ai_settings,screen,ship,bullets): 
 	"""Responds to keypresses"""	
@@ -36,18 +37,17 @@ def check_events(ai_settings,screen,ship,bullets):
 			elif event.type==pygame.KEYUP:
 				check_keyup_events(event,ai_settings,screen,ship,bullets)
 
-def update_screen(ai_settings,screen,ship,bullets,earth_base):
+def update_screen(ai_settings,screen,ship,bullets,aliens):
 	"""Update images on the screen and flip to the new screen"""
 	#Redraw whole window again
 	screen.fill(ai_settings.bg_color)
 	#Redraw all bullets 
 	for bullet in bullets.sprites():
 		bullet.draw_bullet()
-	#Redraw earth base
-	earth_base.blitme()
 	#Redraw ship
 	ship.blitme()
-
+	#draw() on a group, draws all the elments of the group.
+	aliens.draw(screen) 
 	#Making most recently drawn screen visible
 	pygame.display.flip()
 
@@ -67,3 +67,22 @@ def fire_bullet(ai_settings,screen,ship,bullets):
 	if len(bullets)<ai_settings.bullets_allowed:
 		new_bullet=Bullet(ai_settings,screen,ship)
 		bullets.add(new_bullet) #Add bullet to the bullet group
+
+def create_fleet(ai_settings,screen,aliens):
+	"""Create a full fleet of aliens"""
+	#Create an alien. Will not be added to group. It's for dimensions.
+	alien = Alien(ai_settings,screen)
+	alien_width = alien.rect.width
+	#Leaving margins on both sides.
+	available_space_x = ai_settings.screen_width - 2*alien_width
+	#Finding no of aliens that have apt spacing b/w them.
+	number_aliens_x = int(available_space_x / (2*alien_width))
+
+	#Create the first row of aliens.
+	for alien_number in range(number_aliens_x):
+		alien=Alien(ai_settings,screen)
+		alien.x = alien_width + 2 * alien_width * alien_number
+		alien.rect.x = alien.x
+		#aliens the group, not alien the object.
+		aliens.add(alien)
+

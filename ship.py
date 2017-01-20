@@ -13,7 +13,8 @@ class Ship():
 		self.rect.centerx=self.screen_rect.centerx
 		self.rect.bottom=self.screen_rect.bottom
 		#Store a decimal value for the ship's center.
-		self.center=float(self.rect.centerx)
+		self.centerx=float(self.rect.centerx)
+		self.centery=float(self.rect.centery)
 		#MOvement flag
 		self.moving_right=False
 		self.moving_left=False
@@ -22,17 +23,23 @@ class Ship():
 
 	def update(self):
 		"""Update the ship's position based on movement flag"""
-		#Update the ship center value not rect
+		#Update the ship center value not rect ---why?@mD
+		#Movement due to gravity pull of the Earth.
+		if self.rect.centery<self.screen_rect.bottom:
+			self.centery+=self.ai_settings.gravity_factor
+			#print self.rect.centerx, self.rect.centery, self.center
+		#Movement due to keydown
 		if self.moving_right and self.rect.right<self.screen_rect.right:
-			self.center+=self.ai_settings.ship_speed_factor
+			self.centerx+=self.ai_settings.ship_speed_factor
 		if self.moving_left and self.rect.left>self.screen_rect.left:
-			self.center-=self.ai_settings.ship_speed_factor
+			self.centerx-=self.ai_settings.ship_speed_factor
 		if self.moving_up and self.rect.top>0:
-			self.rect.centery-=self.ai_settings.ship_speed_factor
+			self.centery-=self.ai_settings.ship_speed_factor
 		if self.moving_down and self.rect.bottom<self.screen_rect.bottom:
-			self.rect.centery+=self.ai_settings.ship_speed_factor
+			self.centery+=self.ai_settings.ship_speed_factor
 		#Update rect object from self.center.
-		self.rect.centerx=self.center
+		self.rect.centerx=self.centerx
+		self.rect.centery=self.centery
 
 	def blitme(self):
 		"""Draw the ship at its current locattion"""

@@ -14,9 +14,7 @@ class Settings():
 		self.bullet_height=15
 		self.bullet_color=60,60,60
 		self.bullets_allowed=3
-		#Earth settings
-		self.earth_width=1500
-		self.earth_height=200
-		#self.gravity factor=0.5
+		#Gravity Settings
+		self.gravity_factor=0.2
 
 		
