@@ -2,13 +2,13 @@ import pygame
 from pygame.sprite import Sprite 
 
 class Alien(Sprite):
-	"""A class to represent a single alien in the fleet"""
+	"""A class to represent a single alien in the swarm"""
 
-	def __init__(self,ai_settings,screen):
+	def __init__(self,ol_settings,screen):
 		"""Initalise the alien and set its starting positon"""
 		super(Alien,self).__init__()
 		self.screen=screen
-		self.ai_settings=ai_settings
+		self.ol_settings=ol_settings
 
 		#Load the alien image and set its rect attribute.
 		self.image=pygame.image.load('images/alien.bmp')
@@ -25,3 +25,8 @@ class Alien(Sprite):
 	def blitme(self):
 		"""Draw the alien at its current location."""
 		self.screen.blit(self.image,self.rect)
+
+	def update(self):
+		"""Move them right"""
+		self.x+=self.ol_settings.alien_speed_factor
+		self.rect.x=self.x
