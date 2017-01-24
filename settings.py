@@ -18,7 +18,7 @@ class Settings():
 		self.gravity_factor=0.2
 		#Alien settings
 		self.alien_speed_factor = 1
-		self._drop_speed=10
+		self.swarm_drop_speed=10
 		#fleet_direction of 1 is right; -1 is left
 		self.swarm_direction=1
 

@@ -105,6 +105,22 @@ def get_number_rows(ol_settings,ship_height,alien_height):
 	#print number_rows
 	return number_rows
 
-def update_alien_ships(aliens):
+def update_alien_ships(ol_settings,aliens):
 	"""Update the positions of all aliens in the swarm"""
+	#Check first whether swarm is at edge.
+	check_swarm_edges(ol_settings,aliens)
 	aliens.update()
+
+def check_swarm_edges(ol_settings,aliens):
+	"""If aliens at edge, change direction"""
+	for alien in aliens.sprites():
+		if alien.check_edges():
+			change_swarm_direction(ol_settings,aliens)
+			break
+
+def change_swarm_direction(ol_settings,aliens):
+	"""Drop swarm and change direction"""
+	for alien in aliens.sprites():
+		alien.rect.y+=ol_settings.swarm_drop_speed
+	ol_settings.swarm_direction*=-1 
+
