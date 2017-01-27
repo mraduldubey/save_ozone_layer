@@ -51,8 +51,11 @@ def update_screen(ol_settings,screen,plane,bullets,aliens):
 	#Making most recently drawn screen visible
 	pygame.display.flip()
 
-def update_bullets(bullets):
+def update_bullets(ol_settings,screen,plane,aliens,bullets):
 	"""Update positions of bullets and get rid of old ones"""
+	#Check for any bullets that have hit aliens.
+	#If yes then get rid    of the bulet and alien_ship.
+	collisions=pygame.sprite.groupcollide(bullets,aliens,True,True)
 	#Update bullet positions i.e. move them upwards continously.
 	bullets.update()
 	#Get rid of bullets that have disappeared.
@@ -60,6 +63,15 @@ def update_bullets(bullets):
 		if bullet.rect.bottom<=0:
 			bullets.remove(bullet)
 	#print len(bullets)
+	check_bullet_alien_collisions(ol_settings,screen,plane,aliens,bullets)
+
+def check_bullet_alien_collisions(ol_settings,screen,plane,aliens,bullets):
+	"""Check bullet alien collision"""
+	collisions=pygame.sprite.groupcollide(bullets,aliens,True,True)
+	if len(aliens) == 0:
+		#Destroy bullets and create new fleet
+		bullets.empty()
+		create_swarm(ol_settings,screen,plane,aliens)
 
 def fire_bullet(ol_settings,screen,plane,bullets):
 	"""Fire a bullet if limit not reached yet"""
@@ -105,11 +117,15 @@ def get_number_rows(ol_settings,ship_height,alien_height):
 	#print number_rows
 	return number_rows
 
-def update_alien_ships(ol_settings,aliens):
+def update_alien_ships(ol_settings,plane,aliens):
 	"""Update the positions of all aliens in the swarm"""
 	#Check first whether swarm is at edge.
 	check_swarm_edges(ol_settings,aliens)
 	aliens.update()
+
+	#Check alien and plane collision
+	if pygame.sprite.spritecollideany(plane,aliens):
+		print "SHIP HIT!!!"
 
 def check_swarm_edges(ol_settings,aliens):
 	"""If aliens at edge, change direction"""

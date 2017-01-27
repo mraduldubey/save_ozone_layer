@@ -29,8 +29,8 @@ def start_game():
 		#watch for keyboard and mouse events.
 		ge.check_events(ol_settings,screen,plane,bullets)
 		plane.update()
-		ge.update_bullets(bullets)
-		ge.update_alien_ships(ol_settings,alien_ships)
+		ge.update_bullets(ol_settings,screen,plane,alien_ships,bullets)
+		ge.update_alien_ships(ol_settings,plane,alien_ships)
 		ge.update_screen(ol_settings,screen,plane,bullets,alien_ships)
 
 start_game()
