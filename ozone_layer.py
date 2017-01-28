@@ -4,6 +4,7 @@ from plane import Plane
 import game_events as ge
 from pygame.sprite import Group
 from stats import GameStats
+from button import Button 
 
 #Since we create bullet=Group() and alien=Group()
 #we remove the imports. ----- Why?@mD
@@ -16,6 +17,8 @@ def start_game():
 	ol_settings=Settings()
 	screen=pygame.display.set_mode((ol_settings.screen_width,ol_settings.screen_height))
 	pygame.display.set_caption("Ozone Layer")
+	#The Play button is made.
+	play_button = Button(ol_settings,screen,"Play")
 	#Store game stats
 	stats = GameStats(ol_settings)
 	#Making a plane.
@@ -25,17 +28,24 @@ def start_game():
 	bullets=Group()
 	alien_ships=Group()
 
-	#Create swarm of alien eggs.
+	#Create swarm of alien egg ships.
 	ge.create_swarm(ol_settings,screen,plane,alien_ships)
+
 	#Start the main loop for the game.
 	while True:
+
 		#watch for keyboard and mouse events.
-		ge.check_events(ol_settings,screen,plane,bullets)
-		if stats.active_status:
+		ge.check_events(ol_settings,screen,plane,bullets,stats,play_button)
+		
+		#active_status = False when Play button isnt clicked and when the plane limit of 3 is brreached.
+		if stats.active_status: 
 			plane.update()
 			ge.update_bullets(ol_settings,screen,plane,alien_ships,bullets)
 			ge.update_alien_ships(ol_settings,stats,screen,plane,alien_ships,bullets)
-		ge.update_screen(ol_settings,screen,plane,bullets,alien_ships)
+
+		#Doesn't depend on acive_status.
+		ge.update_screen(ol_settings,screen,plane,bullets,alien_ships,play_button,stats)
+
 
 start_game()
 

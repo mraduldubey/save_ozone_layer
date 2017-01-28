@@ -29,7 +29,7 @@ def check_keyup_events(event,ol_settings,screen,plane,bullets):
 	elif event.key==pygame.K_DOWN:
 		plane.moving_down=False
 
-def check_events(ol_settings,screen,plane,bullets):
+def check_events(ol_settings,screen,plane,bullets,stats,play_button):
 	"""Respond to keypresses and mouse events"""
 	for event in pygame.event.get():
 			if event.type==pygame.QUIT:
@@ -38,8 +38,12 @@ def check_events(ol_settings,screen,plane,bullets):
 				check_keydown_events(event,ol_settings,screen,plane,bullets)
 			elif event.type==pygame.KEYUP:
 				check_keyup_events(event,ol_settings,screen,plane,bullets)
+			elif event.type==pygame.MOUSEBUTTONDOWN:
+				mouse_x,mouse_y=pygame.mouse.get_pos()
+				check_play_button(stats,play_button,mouse_x,mouse_y)
 
-def update_screen(ol_settings,screen,plane,bullets,aliens):
+
+def update_screen(ol_settings,screen,plane,bullets,aliens,play_button,stats):
 	"""Update images on the screen and flip to the new screen"""
 	#Redraw whole window again
 	screen.fill(ol_settings.bg_color)
@@ -49,8 +53,11 @@ def update_screen(ol_settings,screen,plane,bullets,aliens):
 	#Redraw plane
 	plane.blitme()
 	#draw() on a group, draws all the elments of the group.
-	aliens.draw(screen) 
-	#Making most recently drawn screen visible
+	aliens.draw(screen)  
+	#Draw the play button if the   game is inactive.
+	if not stats.active_status  :
+		play_button.draw_button()
+	#Making most recently drawn screen visible i.e. fipping to new screen.
 	pygame.display.flip()
 
 def update_bullets(ol_settings,screen,plane,aliens,bullets):
@@ -167,4 +174,10 @@ def check_aliens_bottom(ol_settings,stats,screen,plane,aliens,bullets):
 			#Just as when the plane got hit
 			plane_hit(ol_settings,stats,screen,plane,aliens,bullets)
 			break
+
+def check_play_button(stats,play_button,mouse_x,mouse_y):
+	"""Start  new game when the player clicks Play"""
+	#collidepoint test whether a point is inside a rect
+	if play_button.rect.collidepoint(mouse_x,mouse_y):
+		stats.active_status = True
 

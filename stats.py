@@ -3,7 +3,8 @@ class GameStats(object):
 	def __init__(self, ol_settings):
 		self.ol_settings = ol_settings
 		self.reset_stats()
-  		self.active_status =True
+		#Start gamein inactive mode
+  		self.active_status =False
 
 	def reset_stats(self):
 		"""Initialise stas that change during the game"""

@@ -8,7 +8,7 @@ class Settings():
 		self.bg_color=(150,225,218)
 		#Plane Settting
 		self.plane_speed_factor=1.5
-		self.plane_limit = 3
+		self.plane_limit = 2
 		#Bullet Settings
 		self.bullet_speed_factor=3
 		self.bullet_width=3
