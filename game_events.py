@@ -29,7 +29,7 @@ def check_keyup_events(event,ol_settings,screen,plane,bullets):
 	elif event.key==pygame.K_DOWN:
 		plane.moving_down=False
 
-def check_events(ol_settings,screen,plane,bullets,stats,play_button):
+def check_events(ol_settings,screen,plane,bullets,stats,play_button,aliens):
 	"""Respond to keypresses and mouse events"""
 	for event in pygame.event.get():
 			if event.type==pygame.QUIT:
@@ -40,7 +40,7 @@ def check_events(ol_settings,screen,plane,bullets,stats,play_button):
 				check_keyup_events(event,ol_settings,screen,plane,bullets)
 			elif event.type==pygame.MOUSEBUTTONDOWN:
 				mouse_x,mouse_y=pygame.mouse.get_pos()
-				check_play_button(stats,play_button,mouse_x,mouse_y)
+				check_play_button(ol_settings,screen,stats,play_button,plane,aliens,bullets,mouse_x,mouse_y)
 
 
 def update_screen(ol_settings,screen,plane,bullets,aliens,play_button,stats):
@@ -154,7 +154,7 @@ def change_swarm_direction(ol_settings,aliens):
 def plane_hit(ol_settings,stats,screen,plane,aliens,bullets):
 	"""Respond to ship being hit"""
 	if stats.plane_left > 0:	
-		stats.plane_left-=     1
+		stats.plane_left-=1
 		#Empty list of aliens and bullets
 		aliens.empty()
 		bullets.empty()
@@ -165,6 +165,7 @@ def plane_hit(ol_settings,stats,screen,plane,aliens,bullets):
 		sleep(0.5)
 	else:
 		stats.active_status = False
+		pygame.mouse.set_visible(True)
 
 def check_aliens_bottom(ol_settings,stats,screen,plane,aliens,bullets):
 	"""Check if any aliens have reached the bottom of the screen"""
@@ -175,9 +176,21 @@ def check_aliens_bottom(ol_settings,stats,screen,plane,aliens,bullets):
 			plane_hit(ol_settings,stats,screen,plane,aliens,bullets)
 			break
 
-def check_play_button(stats,play_button,mouse_x,mouse_y):
+def check_play_button(ol_settings,screen,stats,play_button,plane,aliens,bullets,mouse_x,mouse_y):
 	"""Start  new game when the player clicks Play"""
 	#collidepoint test whether a point is inside a rect
-	if play_button.rect.collidepoint(mouse_x,mouse_y):
+	button_clicked=play_button.rect.collidepoint(mouse_x,mouse_y)
+	#print "button clicked"
+	if button_clicked and not stats.active_status:
+		#Reset the game only when it is paused and mouse is clicked on button.
+		stats.reset_stats()
 		stats.active_status = True
-
+		#print "BULL"
+		#Hide mouse cursor.
+		pygame.mouse.set_visible(False)
+		#Remove the list of aliens and bullets.
+		aliens.empty()
+		bullets.empty()
+		#Create a new fleet and center the ship.
+		create_swarm(ol_settings,screen,plane,aliens)
+		plane.center_plane()

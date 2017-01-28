@@ -35,7 +35,7 @@ def start_game():
 	while True:
 
 		#watch for keyboard and mouse events.
-		ge.check_events(ol_settings,screen,plane,bullets,stats,play_button)
+		ge.check_events(ol_settings,screen,plane,bullets,stats,play_button,alien_ships)
 		
 		#active_status = False when Play button isnt clicked and when the plane limit of 3 is brreached.
 		if stats.active_status: 
