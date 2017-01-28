@@ -2,6 +2,8 @@ import sys
 import pygame
 from bullet import Bullet
 from alien import Alien
+from time import sleep
+
 
 def check_keydown_events(event,ol_settings,screen,plane,bullets): 
 	"""Responds to keypresses"""	
@@ -117,15 +119,17 @@ def get_number_rows(ol_settings,ship_height,alien_height):
 	#print number_rows
 	return number_rows
 
-def update_alien_ships(ol_settings,plane,aliens):
-	"""Update the positions of all aliens in the swarm"""
+def update_alien_ships(ol_settings,stats,screen,plane,aliens,bullets):
+	"""Update the positions of all aliens in the swarm and check collisions"""
 	#Check first whether swarm is at edge.
 	check_swarm_edges(ol_settings,aliens)
 	aliens.update()
 
 	#Check alien and plane collision
 	if pygame.sprite.spritecollideany(plane,aliens):
-		print "SHIP HIT!!!"
+		plane_hit(ol_settings,stats,screen,plane,aliens,bullets)
+	#Check for aliens passed through the ozone hole.
+	check_aliens_bottom(ol_settings,stats,screen,plane,aliens,bullets)
 
 def check_swarm_edges(ol_settings,aliens):
 	"""If aliens at edge, change direction"""
@@ -139,4 +143,28 @@ def change_swarm_direction(ol_settings,aliens):
 	for alien in aliens.sprites():
 		alien.rect.y+=ol_settings.swarm_drop_speed
 	ol_settings.swarm_direction*=-1 
+
+def plane_hit(ol_settings,stats,screen,plane,aliens,bullets):
+	"""Respond to ship being hit"""
+	if stats.plane_left > 0:	
+		stats.plane_left-=     1
+		#Empty list of aliens and bullets
+		aliens.empty()
+		bullets.empty()
+		#Create new swarm and posiiton the plane.
+		create_swarm(ol_settings,screen,plane,aliens)
+		plane.center_plane()
+		#Pause
+		sleep(0.5)
+	else:
+		stats.active_status = False
+
+def check_aliens_bottom(ol_settings,stats,screen,plane,aliens,bullets):
+	"""Check if any aliens have reached the bottom of the screen"""
+	screen_rect = screen.get_rect()
+	for alien in aliens.sprites():
+		if alien.rect.bottom >= screen_rect.bottom:
+			#Just as when the plane got hit
+			plane_hit(ol_settings,stats,screen,plane,aliens,bullets)
+			break
 
