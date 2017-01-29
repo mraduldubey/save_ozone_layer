@@ -9,4 +9,6 @@ class GameStats(object):
 	def reset_stats(self):
 		"""Initialise stas that change during the game"""
 	 	self.plane_left = self.ol_settings.plane_limit
+	 	self.ol_settings.initialize_dynamic_settings()
+	 	self.score=0
 	 

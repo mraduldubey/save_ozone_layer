@@ -48,4 +48,4 @@ class Plane():
 	def center_plane(self):
 		"""Center the ship on the screen"""
 		self.centerx = self.screen_rect.centerx
-		self.centery = self.screen_rect.bottom
+		self.centery = self.screen_rect.bottoms

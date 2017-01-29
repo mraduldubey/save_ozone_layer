@@ -5,6 +5,7 @@ import game_events as ge
 from pygame.sprite import Group
 from stats import GameStats
 from button import Button 
+from scorecard import ScoreCard 
 
 #Since we create bullet=Group() and alien=Group()
 #we remove the imports. ----- Why?@mD
@@ -21,6 +22,7 @@ def start_game():
 	play_button = Button(ol_settings,screen,"Play")
 	#Store game stats
 	stats = GameStats(ol_settings)
+	sc=ScoreCard(ol_settings,screen,stats)
 	#Making a plane.
 	plane=Plane(ol_settings,screen)
 	#alien=Alien(ol_settings,screen) --See top@import comment
@@ -40,11 +42,11 @@ def start_game():
 		#active_status = False when Play button isnt clicked and when the plane limit of 3 is brreached.
 		if stats.active_status: 
 			plane.update()
-			ge.update_bullets(ol_settings,screen,plane,alien_ships,bullets)
+			ge.update_bullets(ol_settings,screen,plane,alien_ships,bullets,stats,sc)
 			ge.update_alien_ships(ol_settings,stats,screen,plane,alien_ships,bullets)
 
 		#Doesn't depend on acive_status.
-		ge.update_screen(ol_settings,screen,plane,bullets,alien_ships,play_button,stats)
+		ge.update_screen(ol_settings,screen,plane,bullets,alien_ships,play_button,stats,sc)
 
 
 start_game()

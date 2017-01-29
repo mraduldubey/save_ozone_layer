@@ -1,4 +1,4 @@
-import pygame
+simport pygame
 from pygame.sprite import Sprite
 
 class Bullet(Sprite):

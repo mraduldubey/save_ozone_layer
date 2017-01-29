@@ -43,7 +43,7 @@ def check_events(ol_settings,screen,plane,bullets,stats,play_button,aliens):
 				check_play_button(ol_settings,screen,stats,play_button,plane,aliens,bullets,mouse_x,mouse_y)
 
 
-def update_screen(ol_settings,screen,plane,bullets,aliens,play_button,stats):
+def update_screen(ol_settings,screen,plane,bullets,aliens,play_button,stats,sb):
 	"""Update images on the screen and flip to the new screen"""
 	#Redraw whole window again
 	screen.fill(ol_settings.bg_color)
@@ -54,13 +54,15 @@ def update_screen(ol_settings,screen,plane,bullets,aliens,play_button,stats):
 	plane.blitme()
 	#draw() on a group, draws all the elments of the group.
 	aliens.draw(screen)  
+	#Draw score information.
+	sb.show_score()
 	#Draw the play button if the   game is inactive.
-	if not stats.active_status  :
+	if not stats.active_status:
 		play_button.draw_button()
 	#Making most recently drawn screen visible i.e. fipping to new screen.
 	pygame.display.flip()
 
-def update_bullets(ol_settings,screen,plane,aliens,bullets):
+def update_bullets(ol_settings,screen,plane,aliens,bullets,stats,sc):
 	"""Update positions of bullets and get rid of old ones"""
 	#Check for any bullets that have hit aliens.
 	#If yes then get rid    of the bulet and alien_ship.
@@ -72,14 +74,20 @@ def update_bullets(ol_settings,screen,plane,aliens,bullets):
 		if bullet.rect.bottom<=0:
 			bullets.remove(bullet)
 	#print len(bullets)
-	check_bullet_alien_collisions(ol_settings,screen,plane,aliens,bullets)
+	check_bullet_alien_collisions(ol_settings,screen,plane,aliens,bullets,stats,sc)
 
-def check_bullet_alien_collisions(ol_settings,screen,plane,aliens,bullets):
+def check_bullet_alien_collisions(ol_settings,screen,plane,aliens,bullets,stats,sc):
 	"""Check bullet alien collision"""
 	collisions=pygame.sprite.groupcollide(bullets,aliens,True,True)
+	if collisions:
+		for alien_ships in collisions.values():
+			stats.score+=ol_settings.alien_points *len(alien_ships)
+			sc.prep_score()
 	if len(aliens) == 0:
 		#Destroy bullets and create new fleet
 		bullets.empty()
+		#Speedup the game and level up.
+		ol_settings.game_speedup()
 		create_swarm(ol_settings,screen,plane,aliens)
 
 def fire_bullet(ol_settings,screen,plane,bullets):
