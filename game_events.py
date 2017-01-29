@@ -29,7 +29,7 @@ def check_keyup_events(event,ol_settings,screen,plane,bullets):
 	elif event.key==pygame.K_DOWN:
 		plane.moving_down=False
 
-def check_events(ol_settings,screen,plane,bullets,stats,play_button,aliens):
+def check_events(ol_settings,screen,plane,bullets,stats,play_button,aliens,sc):
 	"""Respond to keypresses and mouse events"""
 	for event in pygame.event.get():
 			if event.type==pygame.QUIT:
@@ -40,7 +40,7 @@ def check_events(ol_settings,screen,plane,bullets,stats,play_button,aliens):
 				check_keyup_events(event,ol_settings,screen,plane,bullets)
 			elif event.type==pygame.MOUSEBUTTONDOWN:
 				mouse_x,mouse_y=pygame.mouse.get_pos()
-				check_play_button(ol_settings,screen,stats,play_button,plane,aliens,bullets,mouse_x,mouse_y)
+				check_play_button(ol_settings,screen,stats,play_button,plane,aliens,bullets,mouse_x,mouse_y,sc)
 
 
 def update_screen(ol_settings,screen,plane,bullets,aliens,play_button,stats,sb):
@@ -83,11 +83,15 @@ def check_bullet_alien_collisions(ol_settings,screen,plane,aliens,bullets,stats,
 		for alien_ships in collisions.values():
 			stats.score+=ol_settings.alien_points *len(alien_ships)
 			sc.prep_score()
+		check_high_score(stats,sc)
 	if len(aliens) == 0:
 		#Destroy bullets and create new fleet
 		bullets.empty()
 		#Speedup the game and level up.
 		ol_settings.game_speedup()
+		#Increase level
+		stats.level+=1
+		sc.prep_level()
 		create_swarm(ol_settings,screen,plane,aliens)
 
 def fire_bullet(ol_settings,screen,plane,bullets):
@@ -134,7 +138,7 @@ def get_number_rows(ol_settings,ship_height,alien_height):
 	#print number_rows
 	return number_rows
 
-def update_alien_ships(ol_settings,stats,screen,plane,aliens,bullets):
+def update_alien_ships(ol_settings,stats,screen,plane,aliens,bullets,sc):
 	"""Update the positions of all aliens in the swarm and check collisions"""
 	#Check first whether swarm is at edge.
 	check_swarm_edges(ol_settings,aliens)
@@ -142,9 +146,9 @@ def update_alien_ships(ol_settings,stats,screen,plane,aliens,bullets):
 
 	#Check alien and plane collision
 	if pygame.sprite.spritecollideany(plane,aliens):
-		plane_hit(ol_settings,stats,screen,plane,aliens,bullets)
+		plane_hit(ol_settings,stats,screen,plane,aliens,bullets,sc)
 	#Check for aliens passed through the ozone hole.
-	check_aliens_bottom(ol_settings,stats,screen,plane,aliens,bullets)
+	check_aliens_bottom(ol_settings,stats,screen,plane,aliens,bullets,sc)
 
 def check_swarm_edges(ol_settings,aliens):
 	"""If aliens at edge, change direction"""
@@ -159,10 +163,12 @@ def change_swarm_direction(ol_settings,aliens):
 		alien.rect.y+=ol_settings.swarm_drop_speed
 	ol_settings.swarm_direction*=-1 
 
-def plane_hit(ol_settings,stats,screen,plane,aliens,bullets):
+def plane_hit(ol_settings,stats,screen,plane,aliens,bullets,sc):
 	"""Respond to ship being hit"""
 	if stats.plane_left > 0:	
 		stats.plane_left-=1
+		#Update Scorecard.
+		sc.prep_planes()
 		#Empty list of aliens and bullets
 		aliens.empty()
 		bullets.empty()
@@ -175,16 +181,16 @@ def plane_hit(ol_settings,stats,screen,plane,aliens,bullets):
 		stats.active_status = False
 		pygame.mouse.set_visible(True)
 
-def check_aliens_bottom(ol_settings,stats,screen,plane,aliens,bullets):
+def check_aliens_bottom(ol_settings,stats,screen,plane,aliens,bullets,sc):
 	"""Check if any aliens have reached the bottom of the screen"""
 	screen_rect = screen.get_rect()
 	for alien in aliens.sprites():
 		if alien.rect.bottom >= screen_rect.bottom:
 			#Just as when the plane got hit
-			plane_hit(ol_settings,stats,screen,plane,aliens,bullets)
+			plane_hit(ol_settings,stats,screen,plane,aliens,bullets,sc)
 			break
 
-def check_play_button(ol_settings,screen,stats,play_button,plane,aliens,bullets,mouse_x,mouse_y):
+def check_play_button(ol_settings,screen,stats,play_button,plane,aliens,bullets,mouse_x,mouse_y,sc):
 	"""Start  new game when the player clicks Play"""
 	#collidepoint test whether a point is inside a rect
 	button_clicked=play_button.rect.collidepoint(mouse_x,mouse_y)
@@ -193,6 +199,11 @@ def check_play_button(ol_settings,screen,stats,play_button,plane,aliens,bullets,
 		#Reset the game only when it is paused and mouse is clicked on button.
 		stats.reset_stats()
 		stats.active_status = True
+		#Reset the scorebard images.
+		sc.prep_score()
+		sc.prep_high_score()
+		sc.prep_level()
+		sc.prep_planes()
 		#print "BULL"
 		#Hide mouse cursor.
 		pygame.mouse.set_visible(False)
@@ -202,3 +213,9 @@ def check_play_button(ol_settings,screen,stats,play_button,plane,aliens,bullets,
 		#Create a new fleet and center the ship.
 		create_swarm(ol_settings,screen,plane,aliens)
 		plane.center_plane()
+
+def check_high_score(stats,sc):
+	"""Check to see if there's a new high score"""
+	if stats.score>stats.high_score:
+		stats.high_score=stats.score
+		sc.prep_high_score()

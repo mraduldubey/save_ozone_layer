@@ -1,8 +1,10 @@
 import pygame
+from pygame.sprite import Sprite 
 
-class Plane():
+class Plane(Sprite):
 	def __init__(self,ol_settings,screen):
 		"""Initialise the plane ans set its starting position."""
+		super(Plane,self).__init__()
 		self.screen=screen
 		self.ol_settings=ol_settings
 		#load the plane image
