@@ -19,6 +19,8 @@ class Settings():
 		self.swarm_drop_speed=10
 		#Scale up for he game speed
 		self.speedup_scale=1.1
+		#Alien point values
+		self.score_scale=1.5
 		self.initialize_dynamic_settings()
 
 	def initialize_dynamic_settings(self):
@@ -35,7 +37,8 @@ class Settings():
 		self.plane_speed_factor*=self.speedup_scale
 		self.bullet_speed_factor*=self.speedup_scale
 		self.alien_speed_factor*=self.speedup_scale
-
+		#Increase alien point values.
+		self.alien_points=int(self.alien_points * self.score_scale)
 
 
 		
