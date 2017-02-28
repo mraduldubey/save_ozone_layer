@@ -44,6 +44,8 @@
 <br>
 <h1>Possible Future Features</h1>
 <ul>
+<li>Hosted online for everyone to play</li>
+<li>Storyline displayed in the game.</li>
 <li>Explode aliens when shot.</li>
 <li>If they are nearby plane, blast it too.</li>
 <li>Bullets tend to get slower and fall back. (let gravity affect them too.)</li>
