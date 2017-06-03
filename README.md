@@ -1,10 +1,15 @@
 # save_ozone_layer
-Pygame based implementation of an arcade-like game.
+A game to promote Environmental Preservation.
+
+![Game](sample.gif?raw=true "Working Screenshot")
+
+
 
 ## Aim
 - Appropriate demonstration for Object Oriented Programming (OOP) paradigm.
 - Use of Pygame.
 - Spreading environmental awareness through it's storyline.
+
 
 ## Prerequisites
 1. Python 2.7
@@ -13,6 +18,7 @@ It's mostly installed by default on Linux.
 ```
 sudo pip install pygame
 ```
+
 
 ## Running the Game Locally
 1. Clone the repository.
@@ -27,12 +33,11 @@ cd src
 ```
 python ozone_layer.py
 ```
-## Screenshot
 
-![Game](sample.gif?raw=true "Working Screenshot")
 
 ## Storyline
 The extraterrestial species of "Vogons" decided to forego their obscurity to decimate Earth in 1800s for the construction of a proposed intergalactic highway, only to discover that the Earth was inpenetrable for them because the Vogons explode near Ozone. Since then, they have been looking for a solution and humanity offered one, in the form of a Ozone Layer Hole above Antarctica. So, after 2 centuries, Vogons are back and they try to enter the planet through the hole. But, like Earths' favourite obsession of Action Movies, their happens to be a solo hero(named Douglas Adams) when they start the attack. This guy in the plane is the player. Now, you may want to try to save Earth figuratively, but, soon, **you'll realise there is no last stage for the game and the only thing you can do is delay the inevitable invasion. So, after you quit, you should realise the best way to save the planet is to save the environment.**
+
 
 ## Current Features
 - The vogon fleet drops down from the top, moving down, right, left and down and so on.
@@ -53,6 +58,7 @@ The extraterrestial species of "Vogons" decided to forego their obscurity to dec
 - Level is displayed at top.
 - The bullets and Vogons end programaticlly as well, when they cross the window.
 
+
 ## Possible Future Features
 - Storyline displayed in the game.
 - Explode aliens when shot.
@@ -62,13 +68,16 @@ The extraterrestial species of "Vogons" decided to forego their obscurity to dec
 - Encryption and file handling for highest scores. They restart at zero everytime game is run.  
 - Show the Ozone Layer and clouds.
 
+
 ## Author
 
 * **Mradul Dubey** - *save_ozone_layer* - [MradulDubey](https://github.com/mraduldubey)
 
+
 ## ArtWork Credit
 
 * **Kenney Vleugels** - [Kenney](https://kenney.nl/assets/space-shooter-extension)
+
 
 ## License
 
