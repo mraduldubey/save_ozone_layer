@@ -5,8 +5,8 @@ from alien import Alien
 from time import sleep
 
 
-def check_keydown_events(event,ol_settings,screen,plane,bullets): 
-	"""Responds to keypresses"""	
+def check_keydown_events(event,ol_settings,screen,plane,bullets):
+	"""Responds to keypresses"""
 	if event.key==pygame.K_RIGHT:
 		plane.moving_right=True
 	elif event.key ==pygame.K_LEFT:
@@ -47,13 +47,13 @@ def update_screen(ol_settings,screen,plane,bullets,aliens,play_button,stats,sb):
 	"""Update images on the screen and flip to the new screen"""
 	#Redraw whole window again
 	screen.fill(ol_settings.bg_color)
-	#Redraw all bullets 
+	#Redraw all bullets
 	for bullet in bullets.sprites():
 		bullet.draw_bullet()
 	#Redraw plane
 	plane.blitme()
 	#draw() on a group, draws all the elments of the group.
-	aliens.draw(screen)  
+	aliens.draw(screen)
 	#Draw score information.
 	sb.show_score()
 	#Draw the play button if the   game is inactive.
@@ -161,11 +161,11 @@ def change_swarm_direction(ol_settings,aliens):
 	"""Drop swarm and change direction"""
 	for alien in aliens.sprites():
 		alien.rect.y+=ol_settings.swarm_drop_speed
-	ol_settings.swarm_direction*=-1 
+	ol_settings.swarm_direction*=-1
 
 def plane_hit(ol_settings,stats,screen,plane,aliens,bullets,sc):
 	"""Respond to ship being hit"""
-	if stats.plane_left > 0:	
+	if stats.plane_left > 0:
 		stats.plane_left-=1
 		#Update Scorecard.
 		sc.prep_planes()
@@ -217,5 +217,6 @@ def check_play_button(ol_settings,screen,stats,play_button,plane,aliens,bullets,
 def check_high_score(stats,sc):
 	"""Check to see if there's a new high score"""
 	if stats.score>stats.high_score:
-		stats.high_score=stats.score
+		stats.set_high_score(stats.score)
+		#do not pickle this score just now. It'll slow down the game.
 		sc.prep_high_score()

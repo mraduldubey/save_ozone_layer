@@ -3,16 +3,16 @@ class Settings():
 	def __init__(self):
 		"""Initialising the game's setings."""
 		#Screen settings
-		self.screen_width=1500
-		self.screen_height=1000
+		self.screen_width=550
+		self.screen_height=800
 		self.bg_color=(150,225,218)
 		#Plane Settting
 		self.plane_limit = 2
 		#Bullet Settings
-		self.bullet_width=3
+		self.bullet_width=4
 		self.bullet_height=15
-		self.bullet_color=60,60,60
-		self.bullets_allowed=3
+		self.bullet_color=255,102,0
+		self.bullets_allowed=4
 		#Gravity Settings
 		self.gravity_factor=0.2
 		#Alien settings
@@ -39,6 +39,3 @@ class Settings():
 		self.alien_speed_factor*=self.speedup_scale
 		#Increase alien point values.
 		self.alien_points=int(self.alien_points * self.score_scale)
-
-
-		

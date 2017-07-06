@@ -66,4 +66,3 @@ class ScoreCard():
 			plane.rect.x=10+plane_number*plane.rect.width
 			plane.rect.y=10
 			self.planes.add(plane)
-
