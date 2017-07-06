@@ -3,7 +3,7 @@ class Settings():
 	def __init__(self):
 		"""Initialising the game's setings."""
 		#Screen settings
-		self.screen_width=550
+		self.screen_width=1000
 		self.screen_height=800
 		self.bg_color=(150,225,218)
 		#Plane Settting
